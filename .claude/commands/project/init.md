@@ -12,11 +12,12 @@
 
 抽出したプレースホルダーを表示し、各プレースホルダーの値をユーザーに質問してください。
 
-- `{{GIT_USER_NAME}}` — Gitユーザー名
-- `{{GIT_USER_EMAIL}}` — Gitメールアドレス
 - `{{GITHUB_REMOTE}}` — GitHubリモートURL（例: `https://github.com/user/QiitaClientApp`）
 - `{{YEAR}}` — 実装年（例: `2026`）
 - `{{LICENSE}}` — ライセンス名（デフォルト: `MIT`）
+
+Gitユーザー名・メールアドレスは別途 Step 4 でローカルの `git config` にのみ設定し、
+**どのファイルにも書き込まないこと**（このリポジトリは公開設定のため、個人情報をコミットしない）。
 
 ## Step 3: 置換の実行
 

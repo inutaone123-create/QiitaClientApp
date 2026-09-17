@@ -1,8 +1,8 @@
 # Project Rules
 
 ## Git設定
-- user.name: Inuta
-- user.email: inuta.one.123@gmail.com
+- コミットの user.name / user.email はローカルの `git config` グローバル設定を使用する
+- 本ファイルには個人情報（氏名・メールアドレス）を記載しない（リポジトリは公開設定のため）
 
 ## 作業ルール
 - 完了報告はファイル（例: `docs/COMPLETION_REPORT.md`）に保存すること。チャット内だけでなくファイルとして残す
@@ -106,7 +106,7 @@ main ← マージ → push
 ## Qiita記事の最終配置について
 
 `/project:qiita` で生成した `docs/qiita_draft*.md` は、このリポジトリ内に留まる。
-最終的にQiitaへ公開する際は、以下のいずれかの方法で `C:\Users\Yasun\LocalWork\ObsidianVault\Qiita\drafts\` へ配置し、qiita-cli形式のフロントマター（`title` / `tags` / `private` / `updated_at` / `id` / `organization_url_name` / `slide` / `ignorePublish`）に整えてから、Vaultリポジトリ経由で公開する：
+最終的にQiitaへ公開する際は、以下のいずれかの方法で `C:\Users\<user>\LocalWork\ObsidianVault\Qiita\drafts\` へ配置し、qiita-cli形式のフロントマター（`title` / `tags` / `private` / `updated_at` / `id` / `organization_url_name` / `slide` / `ignorePublish`）に整えてから、Vaultリポジトリ経由で公開する：
 
 - 手動でファイルをコピーしてフロントマターを整える
 - または、このアプリ自体の投稿機能（`POST /api/drafts/{id}/publish`）を使って直接Qiitaへ投稿する
@@ -117,7 +117,7 @@ Dev Container内は `ObsidianVault` をマウントしていないため、こ�
 - `/workspace` は `git config --global --add safe.directory /workspace` が必要
 - Dev Container内で作業中
 - Dockerfile, docker-compose.yml, .devcontainer/ は変更しない
-- ObsidianVault（`C:\Users\Yasun\LocalWork\ObsidianVault`）はこのプロジェクトの外部にあり、Dev Containerにはマウントされていない
+- ObsidianVault（`C:\Users\<user>\LocalWork\ObsidianVault`）はこのプロジェクトの外部にあり、Dev Containerにはマウントされていない
 
 ## 技術的知見
 

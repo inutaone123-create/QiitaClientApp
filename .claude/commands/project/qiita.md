@@ -114,6 +114,6 @@ TODO: pytest の出力を挿入
 生成完了後、以下を案内してください：
 
 > このドラフトはリポジトリ内 (`docs/qiita_draft.md`) に留まります。TODOを埋めて完成させたら、
-> ホスト側（Dev Container外）で `C:\Users\Yasun\LocalWork\ObsidianVault\Qiita\drafts\` にコピーし、
+> ホスト側（Dev Container外）で `C:\Users\<user>\LocalWork\ObsidianVault\Qiita\drafts\` にコピーし、
 > qiita-cli形式のフロントマター（`id` / `updated_at` / `organization_url_name` / `slide` / `ignorePublish`）を
 > 追加してからVaultリポジトリ経由で公開してください。
