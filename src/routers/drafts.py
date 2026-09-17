@@ -83,7 +83,9 @@ def _get_draft_or_404(db: Session, draft_id: int) -> ManagedArticle:
     """
     article = db.get(ManagedArticle, draft_id)
     if article is None:
-        raise HTTPException(status_code=404, detail=f"下書き（id={draft_id}）が見つかりません")
+        raise HTTPException(
+            status_code=404, detail=f"下書き（id={draft_id}）が見つかりません"
+        )
     return article
 
 
@@ -99,7 +101,9 @@ def _build_qiita_payload(article: ManagedArticle) -> dict[str, Any]:
     return {
         "title": article.title,
         "body": article.body or "",
-        "tags": [{"name": name, "versions": []} for name in _tags_from_str(article.tags)],
+        "tags": [
+            {"name": name, "versions": []} for name in _tags_from_str(article.tags)
+        ],
         "private": article.qiita_private,
     }
 
@@ -158,7 +162,9 @@ def get_draft(draft_id: int, db: Session = Depends(get_db)) -> DraftOut:
 
 
 @router.put("/{draft_id}")
-def update_draft(draft_id: int, payload: DraftUpdate, db: Session = Depends(get_db)) -> DraftOut:
+def update_draft(
+    draft_id: int, payload: DraftUpdate, db: Session = Depends(get_db)
+) -> DraftOut:
     """下書きを編集する（指定されたフィールドのみ更新）.
 
     Args:
@@ -264,7 +270,9 @@ async def sync_draft(
         )
 
     try:
-        result = await client.update_item(article.qiita_id, _build_qiita_payload(article))
+        result = await client.update_item(
+            article.qiita_id, _build_qiita_payload(article)
+        )
     except QiitaAPIError as exc:
         article.status = "sync_error"
         db.commit()

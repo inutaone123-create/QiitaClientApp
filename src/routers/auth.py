@@ -24,7 +24,9 @@ def get_qiita_client() -> QiitaClient:
 
 
 @router.get("/verify")
-async def verify_token(client: QiitaClient = Depends(get_qiita_client)) -> dict[str, Any]:
+async def verify_token(
+    client: QiitaClient = Depends(get_qiita_client),
+) -> dict[str, Any]:
     """Qiitaトークンの有効性を確認する.
 
     Args:

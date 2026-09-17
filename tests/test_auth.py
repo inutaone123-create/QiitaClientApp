@@ -18,7 +18,9 @@ client = TestClient(app)
 
 def test_verify_success():
     """有効なトークンで /api/auth/verify が認証ユーザー情報を返すことを確認する."""
-    app.dependency_overrides[get_qiita_client] = lambda: QiitaClient(token="valid-token")
+    app.dependency_overrides[get_qiita_client] = lambda: QiitaClient(
+        token="valid-token"
+    )
     try:
         with respx.mock:
             respx.get("https://qiita.com/api/v2/authenticated_user").mock(
@@ -34,7 +36,9 @@ def test_verify_success():
 
 def test_verify_invalid_token_returns_401():
     """無効なトークンで /api/auth/verify が401を返すことを確認する."""
-    app.dependency_overrides[get_qiita_client] = lambda: QiitaClient(token="invalid-token")
+    app.dependency_overrides[get_qiita_client] = lambda: QiitaClient(
+        token="invalid-token"
+    )
     try:
         with respx.mock:
             respx.get("https://qiita.com/api/v2/authenticated_user").mock(

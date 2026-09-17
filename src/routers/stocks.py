@@ -41,7 +41,9 @@ async def list_stocks(
 
 
 @router.put("/{item_id}")
-async def stock_article(item_id: str, client: QiitaClient = Depends(get_qiita_client)) -> dict[str, bool]:
+async def stock_article(
+    item_id: str, client: QiitaClient = Depends(get_qiita_client)
+) -> dict[str, bool]:
     """記事をストックする.
 
     Args:
@@ -62,7 +64,9 @@ async def stock_article(item_id: str, client: QiitaClient = Depends(get_qiita_cl
 
 
 @router.delete("/{item_id}")
-async def unstock_article(item_id: str, client: QiitaClient = Depends(get_qiita_client)) -> dict[str, bool]:
+async def unstock_article(
+    item_id: str, client: QiitaClient = Depends(get_qiita_client)
+) -> dict[str, bool]:
     """記事のストックを解除する.
 
     Args:

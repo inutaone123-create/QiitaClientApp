@@ -31,7 +31,14 @@
       "Bash(timeout 120 node_modules/.bin/playwright install chromium)",
       "Bash(curl -s -o /dev/null -w \"server: %{http_code}\\\\n\" http://localhost:8000/)",
       "Bash(node /tmp/claude-0/-workspace/20ce2b77-bafd-4b9c-86b6-12f579671346/scratchpad/drive.js)",
-      "Bash(timeout 120 node_modules/.bin/playwright install-deps chromium)"
+      "Bash(timeout 120 node_modules/.bin/playwright install-deps chromium)",
+      "Bash(python3 -m pip install -q black)",
+      "Bash(python3 -m black --check .)",
+      "Bash(python3 -m black --line-length 100 .)",
+      "Bash(python3 -m black .)",
+      "Bash(python3 -)",
+      "Bash(curl -sL -o static/vendor/purify.min.js https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js)",
+      "Bash(node /tmp/claude-0/-workspace/20ce2b77-bafd-4b9c-86b6-12f579671346/scratchpad/xss_check.js)"
     ]
   },
   "model": "sonnet",

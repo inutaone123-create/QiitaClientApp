@@ -72,7 +72,7 @@ QiitaClientApp/
 │   ├── index.html        # 画面構成（記事一覧/詳細・ストック・下書きエディタ）
 │   ├── style.css
 │   ├── app.js
-│   └── vendor/           # marked.js（CDN取得物を配置）
+│   └── vendor/           # marked.js・DOMPurify（CDN取得物を配置）
 ├── tests/                 # pytest
 ├── docs/                  # ドキュメント・記事ドラフト
 ├── data/                  # SQLiteファイル（gitignore対象）

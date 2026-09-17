@@ -49,7 +49,9 @@ class QiitaTokenNotConfiguredError(QiitaAPIError):
 class QiitaClient:
     """Qiita API v2 への認証付きリクエストをラップするクライアント."""
 
-    def __init__(self, token: str | None = None, base_url: str = QIITA_API_BASE_URL) -> None:
+    def __init__(
+        self, token: str | None = None, base_url: str = QIITA_API_BASE_URL
+    ) -> None:
         """クライアントを初期化する.
 
         Args:
@@ -155,7 +157,9 @@ class QiitaClient:
         response = await self._request("GET", f"/items/{item_id}")
         return response.json()
 
-    async def list_stocks(self, page: int = 1, per_page: int = 20) -> list[dict[str, Any]]:
+    async def list_stocks(
+        self, page: int = 1, per_page: int = 20
+    ) -> list[dict[str, Any]]:
         """自分のストック一覧を取得する.
 
         Args:
@@ -166,7 +170,9 @@ class QiitaClient:
             ストックされた記事情報のリスト
         """
         params = {"page": page, "per_page": per_page}
-        response = await self._request("GET", "/authenticated_user/stocks", params=params)
+        response = await self._request(
+            "GET", "/authenticated_user/stocks", params=params
+        )
         return response.json()
 
     async def stock_item(self, item_id: str) -> None:
@@ -197,7 +203,9 @@ class QiitaClient:
         response = await self._request("POST", "/items", json=payload)
         return response.json()
 
-    async def update_item(self, item_id: str, payload: dict[str, Any]) -> dict[str, Any]:
+    async def update_item(
+        self, item_id: str, payload: dict[str, Any]
+    ) -> dict[str, Any]:
         """既存記事を更新する.
 
         Args:

@@ -39,13 +39,17 @@ async def list_articles(
         HTTPException: Qiita API側でエラーが発生した場合
     """
     try:
-        return await client.list_items(page=page, per_page=per_page, query=query, tag=tag)
+        return await client.list_items(
+            page=page, per_page=per_page, query=query, tag=tag
+        )
     except QiitaAPIError as exc:
         raise HTTPException(status_code=exc.status_code, detail=exc.message) from exc
 
 
 @router.get("/{item_id}")
-async def get_article(item_id: str, client: QiitaClient = Depends(get_qiita_client)) -> dict[str, Any]:
+async def get_article(
+    item_id: str, client: QiitaClient = Depends(get_qiita_client)
+) -> dict[str, Any]:
     """記事詳細を取得する（Qiita本体をプロキシ）.
 
     Args:

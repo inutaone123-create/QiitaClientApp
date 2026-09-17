@@ -86,8 +86,12 @@ async def test_list_items_builds_query_from_query_and_tag():
 @respx.mock
 async def test_stock_item_and_unstock_item():
     """ストック追加・解除がエラーなく完了することを確認する."""
-    respx.put("https://qiita.com/api/v2/items/item123/stock").mock(return_value=Response(204))
-    respx.delete("https://qiita.com/api/v2/items/item123/stock").mock(return_value=Response(204))
+    respx.put("https://qiita.com/api/v2/items/item123/stock").mock(
+        return_value=Response(204)
+    )
+    respx.delete("https://qiita.com/api/v2/items/item123/stock").mock(
+        return_value=Response(204)
+    )
     client = QiitaClient(token="valid-token")
 
     await client.stock_item("item123")
@@ -105,7 +109,9 @@ async def test_create_item_and_update_item():
     )
     client = QiitaClient(token="valid-token")
 
-    created = await client.create_item({"title": "タイトル", "body": "本文", "tags": []})
+    created = await client.create_item(
+        {"title": "タイトル", "body": "本文", "tags": []}
+    )
     updated = await client.update_item("new_item", {"title": "更新後タイトル"})
 
     assert created["id"] == "new_item"

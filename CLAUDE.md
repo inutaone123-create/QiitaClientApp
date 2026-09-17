@@ -138,3 +138,8 @@ Dev Container内は `ObsidianVault` をマウントしていないため、こ�
 - Dev Container内はGUIブラウザが無いため、フロントエンドの実動作確認は `playwright`（npm、`/tmp` に一時導入）+ `playwright install-deps` でheadless Chromiumを動かして検証した。`chromium-cli` は本環境に無かったための代替。`libglib-2.0.so.0` 等のOSライブラリが元々入っておらず、`install-deps` で導入が必要だった。
 - この検証で「戻るボタンで一覧画面に戻ると一覧が再読込されない」バグを発見・修正した（`static/app.js` の `.back-button` クリックハンドラがビュー切り替えのみで `loadArticles()`/`loadDrafts()` を呼んでいなかった）。タブボタン経由の遷移は正しく再読込されていたため、タブ経由の手動確認だけでは見逃していた可能性が高い。今後UIの遷移経路を増やす際は「どの経路からでも一覧は再読込されるか」を確認する。
 - `GET /` はPhase 0時点ではHello World JSONを返す実装だったが、Phase 4で `static/index.html` を返すよう変更した（`FileResponse`）。静的アセットは `/static` にマウントしている。
+
+### セキュリティ（Phase 5・コードレビューで発覚）
+- `/project:review-code` の定性レビューで、Qiita記事本文・下書きプレビューを `marked.js` でHTML化する際、Markdown中の生HTML（`<img onerror=...>` 等）がサニタイズされず描画されるXSSの余地を発見した。個人利用ローカルアプリでも「他人の公開Qiita記事を閲覧する」導線がある以上、無視できないリスクと判断。
+- 対処として `DOMPurify`（CDN取得・`static/vendor/purify.min.js`）を追加し、`marked.parse()` の出力を必ず `DOMPurify.sanitize()` に通してから `innerHTML` へ差し込む方針にした（`static/app.js` の `renderMarkdown()` に集約）。マスタープランの「フロントエンドは外部CDN（marked.js）のみ使用可」という制約に対する例外追加のため、実装前にユーザーへ確認を取った。
+- Playwrightで `<img src=x onerror="...">` を下書き本文に入力し、プレビューでスクリプトが実行されない（`onerror`属性ごと除去される）ことを確認して対策の有効性を検証した。

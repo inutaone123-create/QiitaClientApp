@@ -31,7 +31,9 @@ def test_stock_article_success(qiita_client_override):
     """ストック追加が成功することを確認する."""
     qiita_client_override()
     with respx.mock:
-        respx.put("https://qiita.com/api/v2/items/item1/stock").mock(return_value=Response(204))
+        respx.put("https://qiita.com/api/v2/items/item1/stock").mock(
+            return_value=Response(204)
+        )
         response = client.put("/api/stocks/item1")
 
     assert response.status_code == 200
@@ -42,7 +44,9 @@ def test_unstock_article_success(qiita_client_override):
     """ストック解除が成功することを確認する."""
     qiita_client_override()
     with respx.mock:
-        respx.delete("https://qiita.com/api/v2/items/item1/stock").mock(return_value=Response(204))
+        respx.delete("https://qiita.com/api/v2/items/item1/stock").mock(
+            return_value=Response(204)
+        )
         response = client.delete("/api/stocks/item1")
 
     assert response.status_code == 200

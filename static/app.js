@@ -212,7 +212,7 @@ License: MIT
 
   function renderArticleDetail(item) {
     const tags = (item.tags || []).map((t) => `<span class="tag-badge">${escapeHtml(t.name)}</span>`).join("");
-    const bodyHtml = window.marked ? window.marked.parse(item.body || "") : escapeHtml(item.body || "");
+    const bodyHtml = renderMarkdown(item.body);
     els.articleDetailContent.innerHTML = `
       <h2>${escapeHtml(item.title || "")}</h2>
       <p class="item-card-meta">@${escapeHtml(item.user ? item.user.id : "unknown")}</p>
@@ -223,6 +223,11 @@ License: MIT
     const stockButton = document.getElementById("stock-toggle-button");
     updateStockButtonLabel(stockButton, state.stockedIds.has(item.id));
     stockButton.addEventListener("click", () => toggleStock(item.id, stockButton));
+  }
+
+  function renderMarkdown(markdown) {
+    const rawHtml = window.marked ? window.marked.parse(markdown || "") : escapeHtml(markdown || "");
+    return window.DOMPurify ? window.DOMPurify.sanitize(rawHtml) : escapeHtml(markdown || "");
   }
 
   function updateStockButtonLabel(button, stocked) {
@@ -372,8 +377,7 @@ License: MIT
   }
 
   function renderDraftPreview() {
-    const markdown = els.draftBody.value || "";
-    els.draftPreview.innerHTML = window.marked ? window.marked.parse(markdown) : escapeHtml(markdown);
+    els.draftPreview.innerHTML = renderMarkdown(els.draftBody.value);
   }
 
   function collectDraftPayload() {
