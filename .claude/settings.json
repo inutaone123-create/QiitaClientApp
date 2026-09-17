@@ -50,7 +50,9 @@
       "Bash(python3 -c ' *)",
       "Bash(python3 -c \"import sqlalchemy; print\\(sqlalchemy.__file__, sqlalchemy.__version__\\)\")",
       "Bash(pip show *)",
-      "Bash(sphinx-build -b html docs/sphinx docs/sphinx/_build/html)"
+      "Bash(sphinx-build -b html docs/sphinx docs/sphinx/_build/html)",
+      "Bash(python3 -m pytest --tb=short -q)",
+      "Bash(python3 -m pytest --tb=no -q)"
     ],
     "additionalDirectories": [
       "/workspace/docs/sphinx",
