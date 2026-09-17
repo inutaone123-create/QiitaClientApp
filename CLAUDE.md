@@ -133,3 +133,8 @@ Dev Container内は `ObsidianVault` をマウントしていないため、こ�
 - SQLiteのインメモリDB（`sqlite:///:memory:`）はコネクションごとに別DBになる仕様のため、テスト用に複数セッションを跨いでテーブルを共有するには `poolclass=StaticPool` が必須と判明。付けずに書いたところ「テーブルが存在しない」エラーで落城しかけたので `tests/conftest.py` の `test_db_session` フィクスチャで対応した。
 - 下書き（`ManagedArticle`）のタグはDB上ではカンマ区切り文字列で保持し、APIレスポンス（`DraftOut`）では `list[str]` に変換して返す設計にした。Qiita投稿時のペイロードも `_build_qiita_payload()` でその都度 `[{"name": ..., "versions": []}]` 形式へ組み立てる。DBスキーマの単純さとQiita API仕様への準拠を両立させる狙い。
 - `POST /api/drafts/{id}/publish` / `PUT /api/drafts/{id}/sync` はQiita API呼び出し失敗時、下書きの`status`を`sync_error`に更新してからHTTPExceptionを送出する設計にした。失敗をローカルDBにも記録しておくことで、フロントエンド（Phase 4）が一覧画面でエラー状態を表示できるようにする狙い。
+
+### フロントエンド（Phase 4）
+- Dev Container内はGUIブラウザが無いため、フロントエンドの実動作確認は `playwright`（npm、`/tmp` に一時導入）+ `playwright install-deps` でheadless Chromiumを動かして検証した。`chromium-cli` は本環境に無かったための代替。`libglib-2.0.so.0` 等のOSライブラリが元々入っておらず、`install-deps` で導入が必要だった。
+- この検証で「戻るボタンで一覧画面に戻ると一覧が再読込されない」バグを発見・修正した（`static/app.js` の `.back-button` クリックハンドラがビュー切り替えのみで `loadArticles()`/`loadDrafts()` を呼んでいなかった）。タブボタン経由の遷移は正しく再読込されていたため、タブ経由の手動確認だけでは見逃していた可能性が高い。今後UIの遷移経路を増やす際は「どの経路からでも一覧は再読込されるか」を確認する。
+- `GET /` はPhase 0時点ではHello World JSONを返す実装だったが、Phase 4で `static/index.html` を返すよう変更した（`FileResponse`）。静的アセットは `/static` にマウントしている。

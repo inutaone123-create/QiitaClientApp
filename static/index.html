@@ -1,0 +1,101 @@
+<!--
+QiitaClientApp
+
+This implementation: 2026
+License: MIT
+-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QiitaClientApp</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <header class="app-header">
+    <h1>QiitaClientApp</h1>
+    <nav class="tabs">
+      <button class="tab-button" data-view="articles">記事一覧</button>
+      <button class="tab-button" data-view="stocks">ストック</button>
+      <button class="tab-button" data-view="drafts">下書き</button>
+    </nav>
+  </header>
+
+  <main id="app">
+    <div id="error-banner" class="error-banner" hidden></div>
+
+    <!-- 記事一覧 -->
+    <section id="view-articles" class="view">
+      <form id="articles-search-form" class="search-form">
+        <input type="text" id="articles-query" placeholder="キーワード検索" />
+        <input type="text" id="articles-tag" placeholder="タグで絞り込み（例: Python）" />
+        <button type="submit">検索</button>
+      </form>
+      <ul id="articles-list" class="item-list"></ul>
+      <div class="pagination">
+        <button id="articles-prev">前へ</button>
+        <span id="articles-page-label">1ページ目</span>
+        <button id="articles-next">次へ</button>
+      </div>
+    </section>
+
+    <!-- 記事詳細 -->
+    <section id="view-article-detail" class="view">
+      <button class="back-button" data-back="articles">&larr; 一覧へ戻る</button>
+      <article id="article-detail-content"></article>
+    </section>
+
+    <!-- ストック一覧 -->
+    <section id="view-stocks" class="view">
+      <ul id="stocks-list" class="item-list"></ul>
+    </section>
+
+    <!-- 下書き一覧 -->
+    <section id="view-drafts" class="view">
+      <button id="draft-new-button" class="primary-button">+ 新規下書き作成</button>
+      <ul id="drafts-list" class="item-list"></ul>
+    </section>
+
+    <!-- 下書きエディタ -->
+    <section id="view-draft-editor" class="view">
+      <button class="back-button" data-back="drafts">&larr; 下書き一覧へ戻る</button>
+      <form id="draft-editor-form" class="draft-editor">
+        <input type="hidden" id="draft-id" />
+        <label>
+          タイトル
+          <input type="text" id="draft-title" required />
+        </label>
+        <label>
+          タグ（カンマ区切り、最大5個）
+          <input type="text" id="draft-tags" placeholder="Python,FastAPI" />
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" id="draft-private" />
+          限定共有記事にする
+        </label>
+        <div class="editor-split">
+          <label>
+            本文（Markdown）
+            <textarea id="draft-body" rows="18"></textarea>
+          </label>
+          <div class="preview-pane">
+            <p class="preview-label">プレビュー</p>
+            <div id="draft-preview" class="markdown-body"></div>
+          </div>
+        </div>
+        <div id="draft-status-info" class="status-info"></div>
+        <div class="editor-actions">
+          <button type="submit" id="draft-save-button">下書きを保存</button>
+          <button type="button" id="draft-publish-button" hidden>Qiitaへ投稿する</button>
+          <button type="button" id="draft-sync-button" hidden>Qiitaへ更新を反映する</button>
+          <button type="button" id="draft-delete-button" hidden>この下書きを削除</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <script src="/static/vendor/marked.min.js"></script>
+  <script src="/static/app.js"></script>
+</body>
+</html>
