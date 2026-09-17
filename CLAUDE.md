@@ -128,3 +128,5 @@ Dev Container内は `ObsidianVault` をマウントしていないため、こ�
 - `respx.mock` はhttpxのトランスポート層をモンキーパッチする仕組みのため、`httpx.AsyncClient` をどこで生成しても（`QiitaClient` 内部で都度生成していても）インターセプトされる。そのため「トークンをどの `QiitaClient` インスタンスに持たせるか」だけを `app.dependency_overrides` で差し替えれば、HTTP層自体は素直にrespxでモックできた。
 - Qiita APIのレート制限（429）は仕様通り「リトライせずそのままエラーを返す」方針とし、`QiitaAPIError` としてそのまま送出する実装にした。Phase 3で一覧系エンドポイントを増やす際、429を握りつぶして自動リトライする実装を後から足さないよう注意する。
 - 開発コンテナのPythonは3.10系。`str | None` のUnion記法（PEP 604）がそのまま使えることを確認済み（`from __future__ import annotations` 不要）。
+- `init_db()` は `Base.metadata.create_all()` を呼ぶ前に `from src import models` を関数内で実行している。`database.py` と `models.py` が互いにimportし合う関係（`models.py` は `Base` を `database.py` から取得）のため、モジュールトップレベルで `models` をimportすると循環importになる。関数内import（遅延import）で回避した。
+- FastAPIの起動時DB初期化は `@app.on_event("startup")`（非推奨）ではなく `lifespan` コンテキストマネージャで実装した。将来的にDB以外の起動処理（キャッシュ初期化など）を足す場合もlifespan内に追記する方針とする。

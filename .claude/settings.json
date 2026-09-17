@@ -10,7 +10,11 @@
       "Bash(curl -s -w \"\\\\nHTTP_STATUS:%{http_code}\\\\n\" -H \"Cookie: QIITA_TOKEN_OVERRIDE=\" http://localhost:8000/api/auth/verify)",
       "Bash(QIITA_TOKEN=invalid-dummy-token python3 -c ' *)",
       "Bash(git checkout *)",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git merge *)",
+      "Bash(git branch *)",
+      "Bash(git push *)"
     ]
   },
   "model": "sonnet",
