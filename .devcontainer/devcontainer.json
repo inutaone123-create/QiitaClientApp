@@ -1,0 +1,33 @@
+{
+  "name": "QiitaClientApp",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "dev",
+  "workspaceFolder": "/workspace",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-python.black-formatter",
+        "lextudio.restructuredtext",
+        "anthropic.claude-code"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "python.testing.pytestEnabled": true,
+        "python.testing.unittestEnabled": false,
+        "[python]": {
+          "editor.formatOnSave": true,
+          "editor.defaultFormatter": "ms-python.black-formatter"
+        }
+      }
+    }
+  },
+
+  "forwardPorts": [8000],
+
+  "postCreateCommand": "git config --global --add safe.directory /workspace && mkdir -p docs data .claude && echo 'Dev Container ready! Run: claude'",
+
+  "remoteUser": "root"
+}

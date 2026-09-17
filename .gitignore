@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# 秘密情報
+.env
+
+# DB
+data/*.db
+
+# ドキュメント生成物（テンプレートはコミット対象、生成物は除外）
+docs/sphinx/_build/
+docs/qiita_draft.md
+
+# IDE
+.vscode/settings.json
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Claude Code（設定・キャッシュは除外、agentsはコミット対象）
+.claude/todos/
+.claude/*.log
+.claude/agent.log
+.claude/settings.local.json

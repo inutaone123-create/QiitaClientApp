@@ -1,0 +1,61 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git remote *)",
+      "Bash(python3 -m pip install -q -r requirements.txt)",
+      "Bash(python3 -c \"import fastapi, uvicorn, sqlalchemy, httpx, respx, dotenv, pydantic, pytest; print\\('OK: 全依存パッケージ import 成功'\\)\")",
+      "Bash(pkill -f \"uvicorn src.main:app\")",
+      "Bash(python3 -m pytest -q)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" --max-time 5 https://qiita.com/api/v2/authenticated_user)",
+      "Bash(curl -s -w \"\\\\nHTTP_STATUS:%{http_code}\\\\n\" -H \"Cookie: QIITA_TOKEN_OVERRIDE=\" http://localhost:8000/api/auth/verify)",
+      "Bash(QIITA_TOKEN=invalid-dummy-token python3 -c ' *)",
+      "Bash(git checkout *)",
+      "Bash(git add *)"
+    ]
+  },
+  "model": "sonnet",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"[$(date '+%H:%M:%S')] [PRE] サブエージェント召喚の儀、執り行われ候\" >> /workspace/.claude/agent.log"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"[$(date '+%H:%M:%S')] [POST] サブエージェント帰還の儀、相成り候\" >> /workspace/.claude/agent.log"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"[$(date '+%H:%M:%S')] [STOP] Claude Code、本日の御役目を果たし申した\" >> /workspace/.claude/agent.log"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"[$(date '+%H:%M:%S')] [NOTIFY] $(echo $CLAUDE_NOTIFICATION | head -c 100)\" >> /workspace/.claude/agent.log"
+          }
+        ]
+      }
+    ]
+  }
+}
