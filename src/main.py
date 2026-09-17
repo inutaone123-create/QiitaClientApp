@@ -11,7 +11,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
 from src.database import init_db
-from src.routers import auth
+from src.routers import articles, auth, drafts, stocks
 
 
 @asynccontextmanager
@@ -31,6 +31,9 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
 app = FastAPI(title="QiitaClientApp", lifespan=lifespan)
 
 app.include_router(auth.router)
+app.include_router(articles.router)
+app.include_router(stocks.router)
+app.include_router(drafts.router)
 
 
 @app.get("/")

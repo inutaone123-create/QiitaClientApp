@@ -130,3 +130,6 @@ Dev Container内は `ObsidianVault` をマウントしていないため、こ�
 - 開発コンテナのPythonは3.10系。`str | None` のUnion記法（PEP 604）がそのまま使えることを確認済み（`from __future__ import annotations` 不要）。
 - `init_db()` は `Base.metadata.create_all()` を呼ぶ前に `from src import models` を関数内で実行している。`database.py` と `models.py` が互いにimportし合う関係（`models.py` は `Base` を `database.py` から取得）のため、モジュールトップレベルで `models` をimportすると循環importになる。関数内import（遅延import）で回避した。
 - FastAPIの起動時DB初期化は `@app.on_event("startup")`（非推奨）ではなく `lifespan` コンテキストマネージャで実装した。将来的にDB以外の起動処理（キャッシュ初期化など）を足す場合もlifespan内に追記する方針とする。
+- SQLiteのインメモリDB（`sqlite:///:memory:`）はコネクションごとに別DBになる仕様のため、テスト用に複数セッションを跨いでテーブルを共有するには `poolclass=StaticPool` が必須と判明。付けずに書いたところ「テーブルが存在しない」エラーで落城しかけたので `tests/conftest.py` の `test_db_session` フィクスチャで対応した。
+- 下書き（`ManagedArticle`）のタグはDB上ではカンマ区切り文字列で保持し、APIレスポンス（`DraftOut`）では `list[str]` に変換して返す設計にした。Qiita投稿時のペイロードも `_build_qiita_payload()` でその都度 `[{"name": ..., "versions": []}]` 形式へ組み立てる。DBスキーマの単純さとQiita API仕様への準拠を両立させる狙い。
+- `POST /api/drafts/{id}/publish` / `PUT /api/drafts/{id}/sync` はQiita API呼び出し失敗時、下書きの`status`を`sync_error`に更新してからHTTPExceptionを送出する設計にした。失敗をローカルDBにも記録しておくことで、フロントエンド（Phase 4）が一覧画面でエラー状態を表示できるようにする狙い。
