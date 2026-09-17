@@ -143,3 +143,9 @@ Dev Container内は `ObsidianVault` をマウントしていないため、こ�
 - `/project:review-code` の定性レビューで、Qiita記事本文・下書きプレビューを `marked.js` でHTML化する際、Markdown中の生HTML（`<img onerror=...>` 等）がサニタイズされず描画されるXSSの余地を発見した。個人利用ローカルアプリでも「他人の公開Qiita記事を閲覧する」導線がある以上、無視できないリスクと判断。
 - 対処として `DOMPurify`（CDN取得・`static/vendor/purify.min.js`）を追加し、`marked.parse()` の出力を必ず `DOMPurify.sanitize()` に通してから `innerHTML` へ差し込む方針にした（`static/app.js` の `renderMarkdown()` に集約）。マスタープランの「フロントエンドは外部CDN（marked.js）のみ使用可」という制約に対する例外追加のため、実装前にユーザーへ確認を取った。
 - Playwrightで `<img src=x onerror="...">` を下書き本文に入力し、プレビューでスクリプトが実行されない（`onerror`属性ごと除去される）ことを確認して対策の有効性を検証した。
+
+### ドキュメント生成（Sphinx）でのハマりどころ
+- `sphinx-apidoc -o docs/sphinx .`（リポジトリルートを対象）を実行すると、`--implicit-namespaces`により`/workspace`自体が名前空間パッケージ扱いされ`workspace.src.xxx`という不格好なモジュール名になり、さらに`docs/sphinx`自身も再帰的に対象へ含まれてしまう。対象は `sphinx-apidoc -o docs/sphinx src ...` のように `src` パッケージのみを指定するのが正しい。
+- `src.database.rst` で `Base`（`DeclarativeBase`のサブクラス）を `:members:` 付きでドキュメント化すると、継承された `metadata` / `registry` 属性まで автodocが辿ろうとし、その過程でSQLAlchemyの宣言的マッパー設定が"早期確定"されてしまう模様。その状態で後続の `src.main` → `src.routers.drafts` → `src.models` の import 連鎖が走ると、`class ManagedArticle(Base):` の宣言時に `AttributeError: type object 'ManagedArticle' has no attribute '__table_args__'` で落城する。プレーンなpythonスクリプトで同じインポート順を再現しても再現せず、Sphinxのビルドプロセス内でのみ発生する厄介な相互作用だった。
+  - 立て直し: `src.database.rst` の `automodule` に `:exclude-members: metadata, registry` を追加し、`Base`の内部実装をドキュメント化対象から外すことで解消した。
+  - 次にSQLAlchemyモデルを追加する際、`Base`を含むモジュールをSphinxで自動ドキュメント化する場合は、このexclude設定を維持すること。

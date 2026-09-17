@@ -38,7 +38,23 @@
       "Bash(python3 -m black .)",
       "Bash(python3 -)",
       "Bash(curl -sL -o static/vendor/purify.min.js https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js)",
-      "Bash(node /tmp/claude-0/-workspace/20ce2b77-bafd-4b9c-86b6-12f579671346/scratchpad/xss_check.js)"
+      "Bash(node /tmp/claude-0/-workspace/20ce2b77-bafd-4b9c-86b6-12f579671346/scratchpad/xss_check.js)",
+      "Bash(sphinx-build --version)",
+      "Bash(sphinx-quickstart docs/sphinx --quiet --project=QiitaClientApp --author=Inuta --language=ja --ext-autodoc --ext-viewcode --ext-napoleon)",
+      "Bash(sphinx-quickstart --help)",
+      "Bash(sphinx-quickstart docs/sphinx --quiet --project=QiitaClientApp --author=Inuta --language=ja --ext-autodoc --ext-viewcode)",
+      "Bash(sphinx-apidoc -o docs/sphinx . --force --separate --module-first --implicit-namespaces -e)",
+      "Bash(rm -f docs/sphinx/workspace*.rst docs/sphinx/modules.rst && ls docs/sphinx/*.rst)",
+      "Bash(sphinx-apidoc -o docs/sphinx src --force --separate --module-first -e)",
+      "Bash(sphinx-build -b html docs/sphinx docs/sphinx/_build/html -q)",
+      "Bash(python3 -c ' *)",
+      "Bash(python3 -c \"import sqlalchemy; print\\(sqlalchemy.__file__, sqlalchemy.__version__\\)\")",
+      "Bash(pip show *)",
+      "Bash(sphinx-build -b html docs/sphinx docs/sphinx/_build/html)"
+    ],
+    "additionalDirectories": [
+      "/workspace/docs/sphinx",
+      "/tmp"
     ]
   },
   "model": "sonnet",
